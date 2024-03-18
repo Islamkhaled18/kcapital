@@ -27,6 +27,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\OfferController;
 use App\Models\Payments;
 use App\Models\PropertysInquiry;
 use Illuminate\Support\Facades\Artisan;
@@ -142,12 +143,16 @@ Route::middleware(['auth', 'checklogin'])->group(function () {
         }]);
 
 
-
         Route::get('get_customers_visits', [ReservationController::class, 'customers_visits']);
         Route::get('customers_visits', [ReservationController::class, function () {
             return view('reservations.customers_visits');
         }]);
 
+
+        Route::get('get_customers_offers', [OfferController::class, 'customers_offers']);
+        Route::get('customers_offers', [OfferController::class, function () {
+            return view('offers.customers_offers');
+        }]);
 
 
 

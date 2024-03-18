@@ -32,6 +32,10 @@ use App\Models\UserPurchasedPackage;
 use App\Models\Usertokens;
 use App\Models\user_reports;
 use App\Models\Reservation;
+use App\Models\Offer;
+
+
+
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 
@@ -3190,4 +3194,47 @@ class ApiController extends Controller
 
         return response()->json($response);
     }
+
+
+      //store reservation to visit property
+      public function make_an_offer(Request $request)
+      {
+
+          $validator = Validator::make($request->all(), [
+              'customer_id' => 'exists:customers,id',
+              'property_id' => 'required|exists:propertys,id',
+              'date' => 'date|after_or_equal:today',
+              'status' => 'nullable|in:0,1,2,3',
+              'name'=>'required|string|max:191',
+            //   'phone' => 'required|regex:/(01)[0-9]{9}/|min:8|max:12',
+
+              'phone' => ['required', 'regex:/^(0|1|2|3|4|5|6|7|8|9)[0-9]{8,11}$/','min:8','max:12'],
+
+              'message'=>'required|string|max:255',
+
+          ]);
+
+          if (!$validator->fails()) {
+              // store data
+              $payload = JWTAuth::getPayload($this->bearerToken($request));
+              $current_user = ($payload['customer_id']);
+
+              $reservation = new Offer();
+              $reservation->customer_id = $current_user;
+              $reservation->property_id = $request->property_id;
+              $reservation->date = Carbon::now()->toDateString();
+              $reservation->status = 0;
+              $reservation->name = $request->name;
+              $reservation->phone = $request->phone;
+              $reservation->message = $request->message;
+              $reservation->save();
+
+              $response['message'] = "Offer add successfully";
+          } else {
+              $response['error'] = true;
+              $response['message'] = $validator->errors()->first();
+          }
+
+          return response()->json($response);
+      }
 }

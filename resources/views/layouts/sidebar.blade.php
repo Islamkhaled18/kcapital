@@ -115,6 +115,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="{{ url('customers_offers') }}" class='sidebar-link'>
+                        <i class="fas fa-question-circle"></i>
+                        <span class="menu-item">{{ __('Customers Offers') }}</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="{{ url('getChatList') }}" class='sidebar-link'>
                         <i class="bi bi-chat"></i>
                         <span class="menu-item">{{ __('Chat') }}</span>

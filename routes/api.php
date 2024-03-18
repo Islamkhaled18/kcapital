@@ -70,6 +70,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
 
     Route::post('store_reservation_to_visit_property', [ApiController::class, 'store_reservation_to_visit_property']);
+    Route::post('make_an_offer', [ApiController::class, 'make_an_offer']);
 
 
 
